@@ -50,6 +50,7 @@ def allowed_audio(filename):
 @app.route('/', methods=["GET", "POST"])
 def upload_audio():
     result="this is result"
+    original=''
     if request.method == "POST":
 
         if request.files:
@@ -75,26 +76,29 @@ def upload_audio():
                 voicetext_en = res_en['results'][0]['alternatives'][0]['transcript']
                 voicetext_fr=res_fr['results'][0]['alternatives'][0]['transcript']
                 if voicetext_fr == english_to_french(voicetext_fr):
+                   original=voicetext_fr
                    result = french_to_english(voicetext_fr)
 
                 elif voicetext_en == french_to_english(voicetext_en):
+                    original=voicetext_fr
                     result = english_to_french(voicetext_en)
 
                 else:
+                    original=''
                     result = "It is not either french or english"
                 print(result)
 
 
 
                 print("audio saved")
-                return render_template("public/upload_audio.html", result=result)
+                return render_template("public/upload_audio.html", original=original ,result=result)
 
 
             else:
                 print("That file extension is not allowed")
                 return redirect(request.url)
 
-    return render_template("public/upload_audio.html" , result="result")
+    return render_template("public/upload_audio.html" , result="result",original=original)
 
 
 
