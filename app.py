@@ -26,7 +26,6 @@ stt.set_service_url(stturl)
 
 
 
-
 def english_to_french(input1):
     translation = lt.translate(text=input1, model_id='en-fr-CA').get_result()
     translatedtext = translation['translations'][0]['translation']
@@ -77,10 +76,10 @@ def upload_audio():
                 voicetext_fr=res_fr['results'][0]['alternatives'][0]['transcript']
                 if voicetext_fr == english_to_french(voicetext_fr):
                    result = french_to_english(voicetext_fr)
-                   TestMyModule.test_f2e(input1=voicetext_fr, input2=result)
+
                 elif voicetext_en == french_to_english(voicetext_en):
                     result = english_to_french(voicetext_en)
-                    TestMyModule.test_e2f(input1=voicetext_en, input2=result)
+
                 else:
                     result = "It is not either french or english"
                 print(result)
