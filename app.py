@@ -6,7 +6,7 @@ from ibm_watson import SpeechToTextV1, LanguageTranslatorV3
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 import unittest
 from time import sleep
-result = "this is result"
+
 app=Flask(__name__)
 app.config["AUDIO_UPLOADS"] = "uploads"
 app.config["ALLOWED_AUDIO_EXTENSIONS"] = ["MP3","mp3"]
@@ -46,11 +46,15 @@ def allowed_audio(filename):
         return True
     else:
         return False
-
+result =''
+original=''
+voicetext_en=''
+voicetext_fr=''
 @app.route('/', methods=["GET", "POST"])
 def upload_audio():
-    result=""
-    original=''
+    global result
+    global original
+
     if request.method == "POST":
 
         if request.files:
@@ -64,12 +68,12 @@ def upload_audio():
 
             if allowed_audio(audio.filename):
                 filename = secure_filename(audio.filename)
-                audio.save(os.path.join(app.config["AUDIO_UPLOADS"], filename))
+                audio.save(os.path.join(app.config["AUDIO_UPLOADS"], "result.mp3"))
 
-                with open("uploads/"+filename, 'rb') as f:
+                with open("uploads/result.mp3", 'rb') as f:
                     res_en = stt.recognize(audio=f, content_type='audio/mp3',
                     model='en-US_BroadbandModel').get_result()
-                with open("uploads/" + filename, 'rb') as f:
+                with open("uploads/result.mp3", 'rb') as f:
                     res_fr = stt.recognize(audio=f, content_type='audio/mp3',
                     model='fr-CA_BroadbandModel').get_result()
 
@@ -80,18 +84,22 @@ def upload_audio():
                    result = french_to_english(voicetext_fr)
 
                 elif voicetext_en == french_to_english(voicetext_en):
-                    original=voicetext_fr
+                    original=voicetext_en
                     result = english_to_french(voicetext_en)
 
                 else:
                     original=''
                     result = "It is not either french or english"
+
+
+
+
                 print(result)
 
 
 
                 print("audio saved")
-                return render_template("public/upload_audio.html", original=original ,result=result)
+                return render_template("public/upload_audio.html", original=original ,result= result)
 
 
             else:
@@ -99,6 +107,7 @@ def upload_audio():
                 return redirect(request.url)
 
     return render_template("public/upload_audio.html" , result=result,original=original)
+
 
 
 
