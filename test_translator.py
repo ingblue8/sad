@@ -29,6 +29,8 @@ class TestMyModule(unittest.TestCase):
         elif voicetext_en == translator.french_to_english(voicetext_en):
             self.assertEqual(translator.english_to_french(original), result)
             self.assertNotEqual(translator.english_to_french(original), original)
+        else:
+            pass
 
 
 
