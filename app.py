@@ -49,7 +49,7 @@ def allowed_audio(filename):
 
 @app.route('/', methods=["GET", "POST"])
 def upload_audio():
-    result="this is result"
+    result=""
     original=''
     if request.method == "POST":
 
@@ -98,7 +98,7 @@ def upload_audio():
                 print("That file extension is not allowed")
                 return redirect(request.url)
 
-    return render_template("public/upload_audio.html" , result="result",original=original)
+    return render_template("public/upload_audio.html" , result=result,original=original)
 
 
 
