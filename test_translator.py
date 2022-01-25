@@ -23,14 +23,16 @@ else:
     result = "It is not either french or english"
 class TestMyModule(unittest.TestCase):
     def test_f2e(self):
-        if voicetext_fr == translator.english_to_french(voicetext_fr):
+        if result== "It is not either french or english":
+            print(result)
+            pass
+        elif voicetext_fr == translator.english_to_french(voicetext_fr) and result != "It is not either french or english" :
             self.assertEqual(translator.french_to_english(original), result)
             self.assertNotEqual(translator.french_to_english(original), original)
-        elif voicetext_en == translator.french_to_english(voicetext_en):
+        elif voicetext_en == translator.french_to_english(voicetext_en) and result != "It is not either french or english":
             self.assertEqual(translator.english_to_french(original), result)
             self.assertNotEqual(translator.english_to_french(original), original)
-        else:
-            pass
+
 
 
 
